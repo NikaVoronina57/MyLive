@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Самостоятельная работа №24</title>
+    <style>
+      body {
+        background-color: white;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding: 10px;
+      }
+      .card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: rgb(243, 240, 245);
+        padding: 10px;
+        border: 2px solid rgb(202, 199, 203);
+        border-radius: 10px;
+      }
+      h1 {
+        text-align: center;
+      }
+      label {
+        display: block;
+        font-weight: bold;
+      }
+      input {
+        width: 50%;
+        box-sizing: border-box;
+        border-radius: 10px;
+        padding: 2px;
+      }
+      button {
+        display: block;
+        width: 30%;
+        margin: 15px 0px 10px 0;
+        background-color: rgb(244, 212, 244);
+        border: 1px solid rgb(146, 143, 143);
+        border-radius: 15px;
+        font-size: 16px;
+        padding: 5px 10px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 20px auto 25px auto;
+      }
+      button:hover {
+        background-color: rgb(195, 135, 251);
+        box-shadow: 2px 2px 3px gray;
+      }
+      .error {
+        color: red;
+        font-weight: bold;
+      }
+      .tt {
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: rgb(74, 5, 84);
+        line-height: 1;
+        text-align: center;
+      }
+      img {
+        max-width: 600px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <h1>Калькулятор ИМТ</h1>
+      <label for="heightInput">Рост, см</label>
+      <input type="number" id="heightInput" placeholder="Введите рост" />
+
+      <label for="weightInput">Вес, кг</label>
+      <input type="number" id="weightInput" placeholder="Вес, кг" />
+
+      <button id="calculateButton">Расcчитать</button>
+
+      <div id="messageText"></div>
+      <div class="tt" id="bmiValue">ИМТ: —</div>
+      <div class="tt" id="bmiCategory">Категория не определена.</div>
+      <div class="tt" id="bmiText">
+        Введите рост и вес, чтобы увидеть результат.
+      </div>
+      <img src="images/3.png" id="bmiImage" />
+    </div>
+    <script>
+      let heightInput = document.getElementById("heightInput");
+      let weightInput = document.getElementById("weightInput");
+      let calculateButton = document.getElementById("calculateButton");
+      let messageText = document.getElementById("messageText");
+      let bmiValue = document.getElementById("bmiValue");
+      let bmiCategory = document.getElementById("bmiCategory");
+      let bmiText = document.getElementById("bmiText");
+      let bmiImage = document.getElementById("bmiImage");
+
+      function calculateBmi() {
+        messageText.textContent = "";
+        messageText.className = "";
+
+        let height = Number(heightInput.value);
+        let weight = Number(weightInput.value);
+
+        if (Number.isNaN(height) || height <= 0) {
+          messageText.textContent = "Введите корректный рост.";
+          messageText.classList.add(`error`);
+          return;
+        }
+        if (Number.isNaN(weight) || weight <= 0) {
+          messageText.textContent = "Введите корректный вес.";
+          messageText.classList.add(`error`);
+          return;
+        }
+        let heightM = height / 100;
+        let imt = weight / (heightM * heightM);
+        let category = "";
+        let comment = "";
+        let image = "";
+        if (imt < 16) {
+          category = "Выраженный недостаток массы";
+          comment = "ИМТ сильно ниже нормы.";
+          image = "1.png";
+        } else if (imt < 18.5) {
+          category = "Недостаток массы";
+          comment = "ИМТ немного ниже нормы.";
+          image = "2.png";
+        } else if (imt < 25) {
+          category = "Норма";
+          comment = "ИМТ находится в пределах нормы.";
+          image = "3.png";
+        } else if (imt < 30) {
+          category = "Избыточная масса";
+          comment = "ИМТ находится в пределах нормы.";
+          image = "4.png";
+        } else {
+          category = "Ожирение";
+          comment = "ИМТ значительно выше нормы.";
+          image = "5.png";
+        }
+
+        bmiValue.textContent = "ИМТ: " + imt.toFixed(1);
+        bmiCategory.textContent = "Категория " + category;
+        bmiText.textContent = comment;
+        bmiImage.src = "images/" + image;
+        bmiImage.alt = category;
+      }
+      calculateButton.addEventListener("click", calculateBmi);
+    </script>
+  </body>
+</html>
